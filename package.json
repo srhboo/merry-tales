@@ -1,0 +1,23 @@
+{
+  "name": "merry-tales",
+  "version": "1.0.0",
+  "description": "collaborative discombobulated storytelling using decontextualized illustrations",
+  "main": "server.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "start": "node server.js"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/srhboo/merry-tales.git"
+  },
+  "author": "",
+  "license": "ISC",
+  "bugs": {
+    "url": "https://github.com/srhboo/merry-tales/issues"
+  },
+  "homepage": "https://github.com/srhboo/merry-tales#readme",
+  "dependencies": {
+    "express": "^4.17.1"
+  }
+}
