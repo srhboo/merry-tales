@@ -148,9 +148,11 @@ function preload() {
 }
 
 function setup() {
-  fetch("env.json")
+  fetch("/env")
     .then((data) => data.json())
     .then(({ PUB_KEY, SUB_KEY }) => {
+      console.log("here");
+      console.log({ PUB_KEY });
       pubKey = PUB_KEY;
       subKey = SUB_KEY;
 
