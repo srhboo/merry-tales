@@ -1,7 +1,7 @@
 // PubNub setup
 let dataServer;
-const pubKey = "pub-c-271e97fc-85a9-4293-b5f7-13d27fa0ff40";
-const subKey = "sub-c-e428a13a-01dd-11eb-8930-9a105f766811";
+const pubKey = process.env.PUB_KEY;
+const subKey = process.env.SUB_KEY;
 
 let publisherId = ""; // reset to nothing
 
