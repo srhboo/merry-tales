@@ -1,7 +1,7 @@
 // PubNub setup
 let dataServer;
-const pubKey = 'pub-c-271e97fc-85a9-4293-b5f7-13d27fa0ff40';
-const subKey = 'sub-c-e428a13a-01dd-11eb-8930-9a105f766811';
+const pubKey = process.env.PUB_KEY;
+const subKey = process.env.SUB_KEY;
 
 let publisherId = ""; // reset to nothing
 
@@ -76,16 +76,16 @@ const assetPaths = {
   donkey: "assets/donkey.png",
   door: "assets/door.png",
   corner: "assets/corner.png",
-  bear: "assets/bear.png"
+  bear: "assets/bear.png",
 };
 
 let leftFairy;
 let rightFairy;
-let leftFairyName="";
-let rightFairyName="";
+let leftFairyName = "";
+let rightFairyName = "";
 
 function switchView(newView) {
-  switch(newView) {
+  switch (newView) {
     case "name":
       startMenu.hide();
       view = "name";
@@ -101,24 +101,24 @@ function switchView(newView) {
       view = "game";
       break;
     default:
-      break;  
+      break;
   }
 }
 
 function readIncoming(inMessage) {
-  const {channel, message, timetoken} = inMessage;
-  if(channel === "position") {
-    const {x = currentPositionX, y = currentPositionY} = message;
+  const { channel, message, timetoken } = inMessage;
+  if (channel === "position") {
+    const { x = currentPositionX, y = currentPositionY } = message;
     currentPositionX = x;
     currentPositionY = y;
   }
-  if(channel === "game events") {
+  if (channel === "game events") {
     const { event } = message;
-    if(event === "start") {  
-        switchView("game");
-        startRound();
-    } else if(event === "join") {
-      const { userId } = message; 
+    if (event === "start") {
+      switchView("game");
+      startRound();
+    } else if (event === "join") {
+      const { userId } = message;
       if (userId !== publisherId && publisherId) {
         sendPlayers([userId, publisherId]);
       } else {
@@ -126,16 +126,16 @@ function readIncoming(inMessage) {
         leftFairyName = publisherId;
       }
       sendStart();
-    } else if(event === "full house") {
+    } else if (event === "full house") {
       const { userId, players } = message;
-      host = userId; 
+      host = userId;
       const amIHost = host === publisherId;
-      const otherPlayer = players.filter(name => name !== publisherId)[0];
+      const otherPlayer = players.filter((name) => name !== publisherId)[0];
       fairyDirection = amIHost ? "left" : "right";
       leftFairyName = amIHost ? publisherId : otherPlayer;
-      rightFairyName = amIHost ? otherPlayer : publisherId; 
-    } else if(event === "drop") {
-      const {imageName, height} = message;
+      rightFairyName = amIHost ? otherPlayer : publisherId;
+    } else if (event === "drop") {
+      const { imageName, height } = message;
       const assPath = assetPaths[imageName];
       currImage = createImg(assPath, imageName);
       resetPosition();
@@ -144,58 +144,58 @@ function readIncoming(inMessage) {
 }
 
 function preload() {
-  menuBg = loadImage('assets/st-menu.png');
+  menuBg = loadImage("assets/st-menu.png");
 }
 
 function setup() {
-  characterBg = loadImage('assets/st-name.png');
-  bg = loadImage('assets/woods.png');
-  
+  characterBg = loadImage("assets/st-name.png");
+  bg = loadImage("assets/woods.png");
+
   createCanvas(848, 848);
   frameRate(15);
-  
-  dancer = createImg('assets/owlglass-crop.gif', 'dancer');
+
+  dancer = createImg("assets/owlglass-crop.gif", "dancer");
   dancer.attribute("height", 150);
   dancer.hide();
   currImage = dancer;
-  
-  leftFairy = createImg('assets/bl-fairy.png', 'left fairy');
+
+  leftFairy = createImg("assets/bl-fairy.png", "left fairy");
   leftFairy.attribute("height", 90);
   leftFairy.hide();
-  
-  rightFairy = createImg('assets/yl-fairy.png', 'right fairy');
+
+  rightFairy = createImg("assets/yl-fairy.png", "right fairy");
   rightFairy.attribute("height", 90);
   rightFairy.hide();
-  
-  currentPositionX = width/2;
+
+  currentPositionX = width / 2;
   currentPositionY = height - yOriginOffset;
-  
+
   textSize(40);
   textAlign(CENTER, CENTER);
-  
+
   startMenu = createDiv(" ");
   startMenu.class("menu start");
   startMenu.mousePressed(() => switchView("name"));
-  
+
   nameInput = createInput("");
   nameInput.class("name");
   nameInput.attribute("maxlength", 15);
   nameInput.hide();
-  
+
   enterName = createDiv(" ");
   enterName.class("menu name");
   enterName.mousePressed(sendJoin);
-  enterName.hide();   
+  enterName.hide();
 
   // initialize PubNub
   dataServer = new PubNub({
-      publish_key: pubKey,
-      subscribe_key: subKey,
-      ssl: true,
-      uuid: publisherId
+    publish_key: pubKey,
+    subscribe_key: subKey,
+    ssl: true,
+    uuid: publisherId,
   });
-  
-  dataServer.addListener({ 
+
+  dataServer.addListener({
     message: readIncoming,
   });
   dataServer.subscribe({
@@ -209,7 +209,7 @@ function setup() {
 }
 
 function draw() {
-  switch(view) {
+  switch (view) {
     case "menu":
       background(menuBg);
       break;
@@ -219,13 +219,15 @@ function draw() {
     case "game":
       background(bg);
       fill(255);
-      textFont('Courier');
+      textFont("Courier");
       text(leftFairyName, 100, 100);
       text(rightFairyName, 748, 100);
-      currImage.position(currentPositionX - currImage.width/2, currentPositionY - currImage.height/2);
-      break;      
-    default: 
+      currImage.position(
+        currentPositionX - currImage.width / 2,
+        currentPositionY - currImage.height / 2
+      );
+      break;
+    default:
       break;
   }
-}  
-
+}
