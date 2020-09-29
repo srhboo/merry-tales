@@ -153,6 +153,21 @@ function setup() {
     .then(({ PUB_KEY, SUB_KEY }) => {
       pubKey = PUB_KEY;
       subKey = SUB_KEY;
+
+      // initialize PubNub
+      dataServer = new PubNub({
+        publish_key: pubKey,
+        subscribe_key: subKey,
+        ssl: true,
+        uuid: publisherId,
+      });
+
+      dataServer.addListener({
+        message: readIncoming,
+      });
+      dataServer.subscribe({
+        channels: ["game events", "position"],
+      });
     });
   characterBg = loadImage("assets/st-name.png");
   bg = loadImage("assets/woods.png");
@@ -192,21 +207,6 @@ function setup() {
   enterName.class("menu name");
   enterName.mousePressed(sendJoin);
   enterName.hide();
-
-  // initialize PubNub
-  dataServer = new PubNub({
-    publish_key: pubKey,
-    subscribe_key: subKey,
-    ssl: true,
-    uuid: publisherId,
-  });
-
-  dataServer.addListener({
-    message: readIncoming,
-  });
-  dataServer.subscribe({
-    channels: ["game events", "position"],
-  });
 
   window.onbeforeunload = function () {
     dataServer.unsubscribeAll();
