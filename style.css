@@ -1,0 +1,44 @@
+html, body {
+  margin: 0;
+  padding: 0;
+}
+canvas {
+  display: block;
+}
+
+.menu {
+  position: absolute;
+  height: 65px;
+  cursor: pointer;
+}
+.start {
+  left: 113px;
+  top: 384px;
+  width: 626px;
+}
+div.name {
+  top: 446px;
+  left: 526px;
+  width: 214px;
+}
+input.name {
+  position: absolute;
+  top: 446px;
+  left: 130px;
+  height: 55px;
+  background-color: black;
+  color: #e2cb9a;
+  outline: none;
+  border: 0;
+  font-size: 32px;
+}
+.menu:hover {
+  background-color: #e4bf72;
+  mix-blend-mode: color;
+  opacity: 0.8;
+}
+.info {
+  font-family: Courier;
+  color: white;
+  font-size: 32px;
+}
