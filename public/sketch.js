@@ -1,7 +1,7 @@
 // PubNub setup
 let dataServer;
-const pubKey = process.env.PUB_KEY;
-const subKey = process.env.SUB_KEY;
+let pubKey = "";
+let subKey = "";
 
 let publisherId = ""; // reset to nothing
 
@@ -148,6 +148,12 @@ function preload() {
 }
 
 function setup() {
+  fetch("/env.json")
+    .then((data) => data.json())
+    .then(({ PUB_KEY, SUB_KEY }) => {
+      pubKey = PUB_KEY;
+      subKey = SUB_KEY;
+    });
   characterBg = loadImage("assets/st-name.png");
   bg = loadImage("assets/woods.png");
 
