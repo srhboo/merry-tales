@@ -148,7 +148,7 @@ function preload() {
 }
 
 function setup() {
-  fetch("/env.json")
+  fetch("env.json")
     .then((data) => data.json())
     .then(({ PUB_KEY, SUB_KEY }) => {
       pubKey = PUB_KEY;
